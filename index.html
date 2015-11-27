@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Worldmapgenerator by kevalbhatt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Worldmapgenerator</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/kevalbhatt/WorldMapGenerator" class="btn">View on GitHub</a>
+      <a href="https://github.com/kevalbhatt/WorldMapGenerator/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/kevalbhatt/WorldMapGenerator/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="worldmapgenerator" class="anchor" href="#worldmapgenerator" aria-hidden="true"><span class="octicon octicon-link"></span></a>WorldMapGenerator</h1>
+
+<h1>
+<a id="worldmapgenerator-is-a-jquery-based" class="anchor" href="#worldmapgenerator-is-a-jquery-based" aria-hidden="true"><span class="octicon octicon-link"></span></a>WorldMapGenerator is a jQuery-based</h1>
+
+<p><img src="http://i.imgur.com/i22GQ74.png?1" alt="WorldMap"></p>
+
+<h1>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h1>
+
+<p>This WorldMapGenerator is jquey plugin for creates a Map using SVG using this plugin user can
+select and get timezone value of selected area.</p>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<hr>
+
+<p><code>&lt;script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"&gt;&lt;/script&gt;</code>
+<code>&lt;script type="text/javascript" src="[yourpath]/WorldMapGenerator.js"&gt;&lt;/script&gt;</code></p>
+
+<blockquote>
+<p>Select any element you want and create map inside that element</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre>$(selector).<span class="pl-en">WorldMapGenerator</span>();</pre></div>
+
+<blockquote>
+<p>You can customize WorldMapGenerator with options.</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre>$(selector).<span class="pl-en">WorldMapGenerator</span>({
+        width<span class="pl-k">:</span> <span class="pl-c1">500</span>,
+        height<span class="pl-k">:</span> <span class="pl-c1">250</span>,
+        hoverColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#5A5A5A<span class="pl-pds">'</span></span>,
+        selectedColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#496A84<span class="pl-pds">'</span></span>,
+        mapColor<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#BBB<span class="pl-pds">'</span></span>,
+        defaultCss<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+        quickLink<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span>ACT<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>CET<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>EAT<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>EST<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>GMT<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>IST<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>MST<span class="pl-pds">"</span></span>],
+        selectBox<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+        showHoverText<span class="pl-k">:</span> <span class="pl-c1">true</span>
+})</pre></div>
+
+<blockquote>
+<p>NOTE : No need to include css, it is created inside plugin but if you don't want to create css inside then use <strong>defaultCss:false</strong> and write your css.</p>
+</blockquote>
+
+<h1>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h1>
+
+<hr>
+
+<ul>
+<li>
+<strong>width</strong> : (type:number) Set width of map.</li>
+<li>height: (type:number) Set height of map.</li>
+<li>defaultCss: (type:boolean)  No need to include css if it is true</li>
+<li>hoverColor:(type:string) It will show color on hover </li>
+<li>selectedColor:(type:string) set selected timezone color</li>
+<li>mapColor:(type:string) set map color</li>
+<li>quickLink:(type:Array of string) It will create shortcuts to select zone ["IST","MST".......]</li>
+<li>selectBox:(type:boolean) If it is <strong>false</strong> select box will not create</li>
+<li>showHoverText : (type:boolean)  If it is <strong>false</strong> hover text is not shown</li>
+</ul>
+
+<h1>
+<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Methods</h1>
+
+<hr>
+
+<h3>
+<a id="setvaluestringstring" class="anchor" href="#setvaluestringstring" aria-hidden="true"><span class="octicon octicon-link"></span></a>.setValue(string,string)</h3>
+
+<blockquote>
+<div class="highlight highlight-source-js"><pre>$(selector).<span class="pl-c1">data</span>(<span class="pl-s"><span class="pl-pds">'</span>WorldMapGenerator<span class="pl-pds">'</span></span>).<span class="pl-en">setValue</span>(string,string)</pre></div>
+
+<p>First parameters take timezone string example: 'Asia/Kolkata' so it will select India in map but if you want to select using offset then use.</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre>$(selector).<span class="pl-c1">data</span>(<span class="pl-s"><span class="pl-pds">'</span>WorldMapGenerator<span class="pl-pds">'</span></span>).<span class="pl-en">setValue</span>(<span class="pl-s"><span class="pl-pds">'</span>5.5<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>offset<span class="pl-pds">'</span></span>)</pre></div>
+
+<blockquote>
+<p>or you can select using country also.</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre>$(selector).<span class="pl-c1">data</span>(<span class="pl-s"><span class="pl-pds">'</span>WorldMapGenerator<span class="pl-pds">'</span></span>).<span class="pl-en">setValue</span>(<span class="pl-s"><span class="pl-pds">'</span>IN<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>country<span class="pl-pds">'</span></span>)</pre></div>
+
+<h3>
+<a id="getvalue" class="anchor" href="#getvalue" aria-hidden="true"><span class="octicon octicon-link"></span></a>.getValue()</h3>
+
+<blockquote>
+<p>It will return object of seleted area:</p>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre>$(selector).<span class="pl-c1">data</span>(<span class="pl-s"><span class="pl-pds">'</span>WorldMapGenerator<span class="pl-pds">'</span></span>).<span class="pl-en">getValue</span>()</pre></div>
+
+<blockquote>
+<p>Return Object</p>
+
+<div class="highlight highlight-source-js"><pre>{
+country<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>IN<span class="pl-pds">"</span></span>
+offset<span class="pl-k">:</span> <span class="pl-c1">5.5</span>
+pin<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>373,94<span class="pl-pds">"</span></span>
+selected<span class="pl-k">:</span> <span class="pl-c1">true</span>
+timezone<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Asia/Kolkata<span class="pl-pds">"</span></span>
+zonename<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>IST<span class="pl-pds">"</span></span>
+}</pre></div>
+</blockquote>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<hr>
+
+<p>It is available under the MIT LICENSE</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/kevalbhatt/WorldMapGenerator">Worldmapgenerator</a> is maintained by <a href="https://github.com/kevalbhatt">kevalbhatt</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
