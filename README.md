@@ -19,6 +19,6 @@ select and get timezone value of selected area.
 ---------------------
 It is available under the [MIT LICENSE][license]
 [license]: LICENSE.md
-[liveexample]: http://www.cdnjs.com/libraries/select2
+[liveexample]: 
 [imaglink]:http://i.imgur.com/i22GQ74.png?1
 
