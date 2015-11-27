@@ -1,3 +1,10 @@
+/**
+* @version: 1.0.0
+* @author: Keval Bhatt 
+* @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
+* @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
+* @website: http://kevalbhatt.github.io/WorldMapGenerator/
+*/
 (function($) {
     'use strict';
     var WorldMapGenerator = function(element, options) {
