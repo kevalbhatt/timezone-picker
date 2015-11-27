@@ -19,5 +19,4 @@ select and get timezone value of selected area.
 ---------------------
 It is available under the [MIT LICENSE][license]
 [license]: LICENSE.md
-[liveexample]: 
 
