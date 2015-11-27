@@ -13,8 +13,6 @@ select and get timezone value of selected area.
 ---------------------
 
 
-# [Live Examples][liveexample]
-
 ## License
 ---------------------
 It is available under the [MIT LICENSE][license]
