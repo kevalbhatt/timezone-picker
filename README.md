@@ -2,7 +2,7 @@
 
 # WorldMapGenerator is a jQuery-based
 
-![Imgur][imaglink]
+![Imgur](http://i.imgur.com/i22GQ74.png?1)
 
 # Description
 
@@ -20,5 +20,4 @@ select and get timezone value of selected area.
 It is available under the [MIT LICENSE][license]
 [license]: LICENSE.md
 [liveexample]: 
-[imaglink]:http://i.imgur.com/i22GQ74.png?1
 
