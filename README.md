@@ -9,7 +9,7 @@
 This WorldMapGenerator is jquey plugin for creates a Map using SVG using this plugin user can
 select and get timezone value of selected area.
 
-# [Documentation][documentation]
+# [Documentation and example][documentation]
 ---------------------
 
 
