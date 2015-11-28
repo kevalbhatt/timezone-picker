@@ -10,6 +10,23 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://maashaktitraders.com/WorldMapGenerator.min.js"></script>
+    <style type="text/css">
+    .Cbox select{
+      background-color: #D8D8D8 !important;
+      color:#505559 !important;
+     font-size: small !important;
+    }
+    </style>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-70749255-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
   </head>
   <body>
     <section class="page-header">
@@ -24,10 +41,14 @@
       <h1>
 <a id="world-map-generator" class="anchor" href="#world-map-generator" aria-hidden="true"><span class="octicon octicon-link"></span></a>World Map Generator</h1>
 
-<h1>
-<a id="worldmapgenerator-is-a-jquery-based" class="anchor" href="#worldmapgenerator-is-a-jquery-based" aria-hidden="true"><span class="octicon octicon-link"></span></a>WorldMapGenerator is a jQuery-based</h1>
+<!-- <h1>
+<a id="worldmapgenerator-is-a-jquery-based" class="anchor" href="#worldmapgenerator-is-a-jquery-based" aria-hidden="true"><span class="octicon octicon-link"></span></a>WorldMapGenerator is a jQuery-based</h1> -->
 
-<p><img src="http://i.imgur.com/i22GQ74.png?1" alt="WorldMap"></p>
+<!-- <p><img src="http://i.imgur.com/i22GQ74.png?1" alt="WorldMap"></p> -->
+
+<h1>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h1>
+<div id="map"></div>
 
 <h1>
 <a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h1>
@@ -154,7 +175,11 @@ zonename<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</s
       </footer>
 
     </section>
-
+<script type="text/javascript">
+  $('#map').WorldMapGenerator({
+    quickLink:["ACT","CET","EAT","EST","GMT","IST","MST"]
+  });
+</script>
   
   </body>
 </html>
