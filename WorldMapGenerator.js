@@ -1,18 +1,18 @@
 /**
-* @version: 1.0.0
-* @author: Keval Bhatt 
-* @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
-* @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
-* @website: http://kevalbhatt.github.io/WorldMapGenerator/
-*/
+ * @version: 1.0.0
+ * @author: Keval Bhatt 
+ * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
+ * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
+ * @website: http://kevalbhatt.github.io/WorldMapGenerator/
+ */
 (function($) {
     'use strict';
     var WorldMapGenerator = function(element, options) {
-        this.$el = element
-        this.genrateMap(options);
+        this.$el = element;
+        this.generateMap(options);
     }
 
-    WorldMapGenerator.VERSION = '1.0.0'
+    WorldMapGenerator.VERSION = '1.0.0';
 
     WorldMapGenerator.DEFAULTS = {
         width: 500,
@@ -25,8 +25,210 @@
         quickLink: ["IST", "EAT"],
         selectBox: true,
         showHoverText: true
-    }
+    };
 
+    WorldMapGenerator.prototype = {
+
+        constructor: WorldMapGenerator,
+        /**
+         * [setValue set value in map]
+         * @param {[type]} value [attribute value]
+         * @param {[type]} attr  [attribute name]
+         */
+        setValue: function(value, attr) {
+            this.$el.find('svg polygon').attr('data-selected', 'false');
+            var elements = this.$el.find('svg polygon[data-' + ((attr) ? (attr) : ("timezone")) + '="' + value + '"]');
+            if (elements && elements.length) {
+                elements.attr('data-selected', 'true');
+                this.$el.find('select option[value="' + ((attr) ? (elements.attr('data-timeZone')) : (value)) + '"]').prop('selected', true);
+            }
+        },
+        /**
+         * [getValue get selected value array]
+         * @return {[type]} [description]
+         */
+        getValue: function() {
+            var value = [];
+            this.$el.find('svg polygon[data-selected="true"]').map(function(index, el) {
+                value.push($(el).data());
+            });
+            return value;
+        },
+        /**
+         * [generateMap create element dynamically]
+         * @param  {[type]} options [depanding on option it will create e]
+         * @return {[type]}         [description]
+         */
+        generateMap: function(options) {
+
+            var polygon = [],
+                option = [],
+                quickLink = [],
+                containerArr = [],
+                timezone = WorldMapGenerator.timeZoneValue;
+            for (var index in timezone) {
+                polygon.push(this.genrateElement('polygon', {
+                    'data-timezone': timezone[index].timezone,
+                    'data-country': timezone[index].country,
+                    'data-pin': timezone[index].pin,
+                    'data-offset': timezone[index].offset,
+                    'points': timezone[index].points,
+                    'data-zonename': timezone[index].zoneName
+                }, false, true));
+                option.push(this.genrateElement('option', {
+                    'value': timezone[index].timezone
+                }, timezone[index].timezone + " (" + timezone[index].zoneName + ")"));
+            }
+            if (options.selectBox) {
+                var select = this.genrateElement('select', {
+                    'class': 'btn btn-default dropdown-toggle',
+                }, option);
+                containerArr.push(select);
+            }
+
+
+            if (options.quickLink) {
+                for (var index in options.quickLink) {
+                    quickLink.push(this.genrateElement('span', {}, options.quickLink[index]));
+                }
+                var qickLinkDiv = this.genrateElement('div', {
+                    'class': 'quickLink'
+                }, quickLink);
+                containerArr.push(qickLinkDiv);
+            }
+
+
+
+            var svg = this.genrateElement('svg', {
+                'class': 'timezone-map',
+                'viewBox': '0 0 ' + options.width + ' ' + options.height
+            }, polygon, true);
+
+            if (containerArr.length > 0) {
+                var container = this.genrateElement('div', {
+                    'class': 'Cbox'
+                }, containerArr);
+                this.$el.append(container);
+
+            }
+            this.$el.append(svg);
+
+            if (options.showHoverText) {
+                var hoverZone = this.genrateElement('span', {
+                    'class': 'hoverZone',
+                });
+                this.$el.append(hoverZone);
+            }
+
+
+
+            if (options.defaultCss) {
+                this.createCss(options);
+            }
+            this.bindEvent(options);
+
+        },
+        /**
+         * [bindEvent bind all event i.e click,mouseenter,mouseleave,change(select)]
+         * @return {[type]} [description]
+         */
+        bindEvent: function() {
+            var that = this;
+            this.$el.on('mouseenter', 'svg polygon', function(e) {
+                var d = $(this).data();
+                $('.timezone-map polygon[data-zonename="' + d.zonename + '"]').attr('class', 'active');
+                that.$el.find('.hoverZone').text(d.timezone + " (" + d.zonename + ")");
+            });
+            this.$el.on('mouseleave', 'svg polygon', function(e) {
+                $('.timezone-map polygon').attr('class', '');
+                that.$el.find('.hoverZone').text('');
+            });
+            this.$el.on('click', 'svg polygon', function() {
+                that.setValue($(this).attr('data-zonename'), 'zonename');
+                that.$el.trigger("map:clicked");
+            })
+            this.$el.on('change', 'select', function() {
+                that.$el.find('svg polygon').attr('data-selected', 'false');
+                that.$el.find('svg polygon[data-timezone="' + $(this).val() + '"]').attr('data-selected', 'true');
+            });
+            this.$el.on('click', '.quickLink span', function() {
+                that.setValue($(this).text(), 'zonename');
+                that.$el.trigger("map:clicked");
+            });
+        },
+        /**
+         * [genrateElement description]
+         * @param  {[Jquery Object]}  element     [selector]
+         * @param  {[type]}  elementAttr [description]
+         * @param  {[javascript Object or text]}  chilled      [If we pass javascript object or  array it will append all chilled and if you pass string it will add string(value) inside element ]
+         * @param  {Boolean} isSvg       [If it is svg then it will create svg element]
+         * @return {[type]}              [description]
+         */
+        genrateElement: function(element, elementAttr, chilled, isSvg) {
+
+
+            if (isSvg) {
+                var elementObject = document.createElementNS('http://www.w3.org/2000/svg', element);
+            } else {
+                var elementObject = document.createElement(element);
+            }
+            if (elementAttr) {
+                for (var key in elementAttr) {
+                    elementObject.setAttribute(key, elementAttr[key]);
+                }
+            }
+            if (chilled) {
+                if (chilled instanceof Array) {
+                    for (var chilleds in chilled) {
+                        elementObject.appendChild(chilled[chilleds]);
+                    }
+                } else if (typeof chilled == 'string') {
+                    elementObject.innerHTML = chilled;
+                } else {
+                    elementObject.appendChild(chilled);
+                }
+
+            }
+
+            return elementObject;
+
+        },
+        /**
+         * [createCss function will create css dynamically it is insert style attribute in  in head ]
+         * @param  {[type]} options [options has mapColor,selectedColor,hoverColor ]
+         * @return {[type]}         [description]
+         */
+        createCss: function(options) {
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = '.timezone-map polygon[data-selected="true"] {fill: ' + options.selectedColor + '}' +
+                '.timezone-map polygon { fill: ' + options.mapColor + ';}' +
+                '.timezone-map polygon.active {fill: ' + options.hoverColor + ';}' +
+                '.timezone-map polygon:hover { cursor: pointer;}' +
+                '.Cbox .quickLink{width: 50%;float: right;margin-left: 5%;}' +
+                '.Cbox .quickLink span:hover {color:#FFF;background-color: #496A84;  cursor: pointer;}' +
+                '.Cbox select{width: 45%;float: left;height: 27px; padding: 0px 0px 0px 10px;}' +
+                '.Cbox .quickLink span{ font-weight: 300; border-radius: 3px; color: #000; background-color: #FFF; border: solid 1px #CCC;margin-left: 10px;' +
+                'font-size: 9px;padding: 4px 6px 4px 6px;}';
+            document.getElementsByTagName('head')[0].appendChild(style);
+
+        }
+    };
+    /**
+     * [Plugin Staring point for plugin]
+     * @param {[type]} option [user options which can be override the default options]
+     */
+    function Plugin(option) {
+
+        return this.each(function() {
+            var $el = $(this)
+            var options = $.extend({}, WorldMapGenerator.DEFAULTS, $el.data(), typeof option == 'object' && option);
+            $el.data('WorldMapGenerator', new WorldMapGenerator($el, options));
+            $el.trigger("map:loaded");
+        });
+    };
+
+    $.fn.WorldMapGenerator = Plugin;
 
     WorldMapGenerator.timeZoneValue = [{
         "timezone": "Africa/Abidjan",
@@ -3186,176 +3388,5 @@
         "points": "-3,150,10,138",
         "zoneName": "WFT"
     }];
-    WorldMapGenerator.prototype = {
-
-        constructor: WorldMapGenerator,
-
-        setValue: function(value, attr) {
-            this.$el.find('svg polygon').attr('data-selected', 'false');
-            var elements = this.$el.find('svg polygon[data-' + ((attr) ? (attr) : ("timezone")) + '="' + value + '"]')
-            elements.attr('data-selected', 'true');
-            this.$el.find('select option[value="' + ((attr) ? (elements.attr('data-timeZone')) : (value)) + '"]').prop('selected', true);
-        },
-        getValue: function() {
-            return this.$el.find('svg polygon[data-selected="true"]').data()
-        },
-        exception: function(message) {
-            throw new Error(message)
-        },
-        genrateMap: function(options) {
-
-            var polygon = [],
-                option = [],
-                quickLink = [],
-                containerArr = [],
-                timzone = WorldMapGenerator.timeZoneValue;
-            for (var index in timzone) {
-                polygon.push(this.genrateElement('polygon', {
-                    'data-timezone': timzone[index].timezone,
-                    'data-country': timzone[index].country,
-                    'data-pin': timzone[index].pin,
-                    'data-offset': timzone[index].offset,
-                    'points': timzone[index].points,
-                    'data-zonename': timzone[index].zoneName
-                }, false, true));
-                option.push(this.genrateElement('option', {
-                    'value': timzone[index].timezone
-                }, timzone[index].timezone + " (" + timzone[index].zoneName + ")"));
-            }
-            if (options.selectBox) {
-                var select = this.genrateElement('select', {
-                    'class': 'btn btn-default dropdown-toggle',
-                }, option);
-                containerArr.push(select)
-            }
-
-
-            if (options.quickLink) {
-                for (var index in options.quickLink) {
-                    quickLink.push(this.genrateElement('span', {}, options.quickLink[index]));
-                }
-                var qickLinkDiv = this.genrateElement('div', {
-                    'class': 'quickLink'
-                }, quickLink);
-                containerArr.push(qickLinkDiv)
-            }
-
-
-
-            var svg = this.genrateElement('svg', {
-                'class': 'timezone-map',
-                'viewBox': '0 0 ' + options.width + ' ' + options.height
-            }, polygon, true);
-
-            if (containerArr.length > 0) {
-                var container = this.genrateElement('div', {
-                    'class': 'Cbox'
-                }, containerArr);
-                this.$el.append(container);
-
-            }
-            this.$el.append(svg);
-
-            if (options.showHoverText) {
-                var hoverZone = this.genrateElement('span', {
-                    'class': 'hoverZone',
-                });
-                this.$el.append(hoverZone);
-            }
-
-
-
-            if (options.defaultCss) {
-                this.createCss(options)
-            }
-            this.bindEvent(options)
-
-        },
-        bindEvent: function(options) {
-            var that = this;
-            this.$el.on('mouseenter', 'svg polygon', function(e) {
-                var d = $(this).data();
-                $('.timezone-map polygon[data-offset="' + d.offset + '"]').attr('class', 'active');
-                that.$el.find('.hoverZone').text(d.timezone);
-            });
-            this.$el.on('mouseleave', 'svg polygon', function(e) {
-                $('.timezone-map polygon').attr('class', '');
-                that.$el.find('.hoverZone').text('');
-            });
-            this.$el.on('click', 'svg polygon', function() {
-                that.setValue($(this).attr('data-timezone'))
-                that.$el.trigger("map:clicked");
-            })
-            this.$el.on('change', 'select', function() {
-                that.$el.find('svg polygon').attr('data-selected', 'false');
-                that.$el.find('svg polygon[data-timezone="' + $(this).val() + '"]').attr('data-selected', 'true');
-            });
-            this.$el.on('click', '.quickLink span', function() {
-                that.setValue($(this).text(), 'zonename');
-                that.$el.trigger("map:clicked");
-            });
-        },
-        /**
-         * [genrateElement description]
-         * @param  {[Jquery Object]}  element     [selector]
-         * @param  {[type]}  elementAttr [description]
-         * @param  {[javascript Object or text]}  chilled      [if we pass javascript object or  array it will append all chilled and if you pass string it will add string(value) inside element ]
-         * @param  {Boolean} isSvg       [id it is svg then it will create svg element]
-         * @return {[type]}              [description]
-         */
-        genrateElement: function(element, elementAttr, chilled, isSvg) {
-
-
-            if (isSvg) {
-                var elementObject = document.createElementNS('http://www.w3.org/2000/svg', element);
-            } else {
-                var elementObject = document.createElement(element);
-            }
-            if (elementAttr) {
-                for (var key in elementAttr) {
-                    elementObject.setAttribute(key, elementAttr[key]);
-                }
-            }
-            if (chilled) {
-                if (chilled instanceof Array) {
-                    for (var chilleds in chilled) {
-                        elementObject.appendChild(chilled[chilleds]);
-                    }
-                } else if (typeof chilled == 'string') {
-                    elementObject.innerHTML = chilled;
-                } else {
-                    elementObject.appendChild(chilled);
-                }
-
-            }
-
-            return elementObject
-
-        },
-        createCss: function(options) {
-            var style = document.createElement('style');
-            style.type = 'text/css';
-            style.innerHTML = '.timezone-map polygon[data-selected="true"] {fill: ' + options.selectedColor + '}' +
-                '.timezone-map polygon { fill: ' + options.mapColor + ';}.timezone-map polygon.active {fill: ' + options.hoverColor + ';}' +
-                '.timezone-map polygon:hover { cursor: pointer;}.Cbox .quickLink{width: 50%;float: right;margin-left: 5%;}' +
-                '.Cbox .quickLink span:hover {color:#FFF;background-color: #496A84;  cursor: pointer;}.Cbox select{width: 45%;float: left;height: 27px; padding: 0px 0px 0px 10px;}' +
-                '.Cbox .quickLink span{ font-weight: 300; border-radius: 3px; color: #000; background-color: #FFF; border: solid 1px #CCC;margin-left: 10px;' +
-                'font-size: 9px;padding: 4px 6px 4px 6px;}';
-            document.getElementsByTagName('head')[0].appendChild(style);
-
-        }
-    }
-
-    function Plugin(option) {
-
-        return this.each(function() {
-            var $el = $(this)
-            var options = $.extend({}, WorldMapGenerator.DEFAULTS, $el.data(), typeof option == 'object' && option);
-            $el.data('WorldMapGenerator', new WorldMapGenerator($el, options));
-            $el.trigger("map:loaded");
-        })
-    }
-
-    $.fn.WorldMapGenerator = Plugin;
 
 })(jQuery);
