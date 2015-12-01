@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://maashaktitraders.com/WorldMapGenerator.min.js"></script>
+    <script type="text/javascript" src="js/WorldMapGenerator.min.js"></script>
     <style type="text/css">
     .Cbox select{
       background-color: #D8D8D8 !important;
@@ -151,14 +151,26 @@ select and get timezone value of selected area.</p>
 <blockquote>
 <p>Return Object</p>
 
-<div class="highlight highlight-source-js"><pre>{
-country<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>IN<span class="pl-pds">"</span></span>
-offset<span class="pl-k">:</span> <span class="pl-c1">5.5</span>
-pin<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>373,94<span class="pl-pds">"</span></span>
-selected<span class="pl-k">:</span> <span class="pl-c1">true</span>
-timezone<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Asia/Kolkata<span class="pl-pds">"</span></span>
-zonename<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>IST<span class="pl-pds">"</span></span>
-}</pre></div>
+<div class="highlight highlight-source-js"><pre>
+  [
+    {
+        "selected"<span class="pl-k">:</span><span class="pl-c1">true</span>,
+        "zonename"<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>IST<span class="pl-pds">"</span></span>,
+        "offset"<span class="pl-k">:</span><span class="pl-c1">5.5</span>,
+        "pin"<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>361,115<span class="pl-pds">"</span></span>,
+        "country"<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>LK<span class="pl-pds">"</span></span>,
+        "timezone"<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Asia/Colombo<span class="pl-pds">"</span></span>,
+    },
+    {
+        "zonename"<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>IST<span class="pl-pds">"</span></span>,
+        "offset"<span class="pl-k">:</span><span class="pl-c1">5.5</span>,
+        "pin"<span class="pl-k">:</span><span class="pl-s"> <span class="pl-pds">"</span>373,94<span class="pl-pds">"</span></span>,
+        "country"<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>IN<span class="pl-pds">"</span></span>,
+        "timezone"<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Asia/Kolkata<span class="pl-pds">"</span></span>,
+    }
+]
+
+</pre></div>
 </blockquote>
 
 <h2>
