@@ -1,0 +1,18 @@
+{
+    "name": "worldmap",
+    "version": "1.0.0",
+    "ignore": [
+        "source",
+        "spec",
+        ".bowerrc",
+        ".gitignore",
+        ".jshintignore",
+        ".jshintrc",
+        "bower.json",
+        "package.json",
+        "README.md"
+    ],
+     "dependencies": {
+        "jquery": ">=1.10.2"
+    },
+}
