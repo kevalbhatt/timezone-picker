@@ -1,5 +1,5 @@
 {
-    "name": "worldmap",
+    "name": "world-map",
     "version": "1.0.0",
     "ignore": [
         "source",
@@ -13,6 +13,6 @@
         "README.md"
     ],
      "dependencies": {
-        "jquery": ">=1.10.2"
+        "jquery": ">=1.11.3"
     },
 }

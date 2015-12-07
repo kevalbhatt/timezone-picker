@@ -5,8 +5,33 @@
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
  * @website: http://kevalbhatt.github.io/WorldMapGenerator/
  */
-(function($) {
-    'use strict';
+'use strict';
+(function(root, factory) {
+
+    if (typeof define === 'function' && define.amd) {
+        define(['moment', 'jquery'], function(momentjs, $) {
+            factory(momentjs, $);
+        });
+
+    } else {
+        if ((typeof root.moment == "undefined")) {
+            var moment = false;
+            console.log('Day light feature requires moment.js')
+        } else {
+            if (!(root.moment.tz)) {
+                throw new Error('moment-timezone dependency not found');
+            }
+        }
+        if ((root.jQuery != "undefined" || root.Zepto != "undefined" || root.ender != "undefined" || root.$ != "undefined")) {
+            factory(root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
+        } else {
+            throw new Error('jQuery dependnecy not found');
+        }
+
+    }
+
+}(this, function(moment, $) {
+
     var WorldMapGenerator = function(element, options) {
         this.$el = element;
         this.generateMap(options);
@@ -22,25 +47,37 @@
         mapColor: '#BBB',
         defaultCss: true,
         localStore: true,
-        quickLink: ["IST", "EAT"],
+        quickLink: [{
+            "IST": "IST",
+            "EAT": "EAT"
+        }],
         selectBox: true,
-        showHoverText: true
+        showHoverText: true,
+        dayLightSaving: ((typeof moment == "function") ? (true) : (false))
     };
 
     WorldMapGenerator.prototype = {
 
         constructor: WorldMapGenerator,
+
         /**
          * [setValue set value in map]
-         * @param {[type]} value [attribute value]
-         * @param {[type]} attr  [attribute name]
+         * @param {[type]} value        [attribute value]
+         * @param {[type]} attribute         [attribute name]
          */
-        setValue: function(value, attr) {
+        setValue: function(value, attribute) {
+
             this.$el.find('svg polygon').attr('data-selected', 'false');
-            var elements = this.$el.find('svg polygon[data-' + ((attr) ? (attr) : ("timezone")) + '="' + value + '"]');
+            var elements = this.$el.find('svg polygon[data-' + ((attribute) ? (attribute) : ("timezone")) + '="' + value + '"]');
+
             if (elements && elements.length) {
                 elements.attr('data-selected', 'true');
-                this.$el.find('select option[value="' + ((attr) ? (elements.attr('data-timeZone')) : (value)) + '"]').prop('selected', true);
+                this.$el.find('select option[value="' + ((attribute) ? (elements.attr('data-timeZone')) : (value)) + '"]').prop('selected', true);
+                this.$el.find('.quickLink span').removeClass('active');
+                var findQuickLink = this.$el.find('.quickLink span[data-select="' + value + '"]');
+                this.$el.find('.quickLink span[data-select="' + value + '"]').addClass('active');
+                this.$el.find('.quickLink span[data-select="' + elements.attr('data-zonename') + '"]').addClass('active');
+
             }
         },
         /**
@@ -73,11 +110,11 @@
                     'data-pin': timezone[index].pin,
                     'data-offset': timezone[index].offset,
                     'points': timezone[index].points,
-                    'data-zonename': timezone[index].zoneName
+                    'data-zonename': ((options.dayLightSaving) ? (moment().tz(timezone[index].timezone).zoneName()) : (timezone[index].zoneName))
                 }, false, true));
                 option.push(this.genrateElement('option', {
                     'value': timezone[index].timezone
-                }, timezone[index].timezone + " (" + timezone[index].zoneName + ")"));
+                }, timezone[index].timezone + " (" + ((options.dayLightSaving) ? (moment().tz(timezone[index].timezone).zoneName()) : (timezone[index].zoneName)) + ")"));
             }
             if (options.selectBox) {
                 var select = this.genrateElement('select', {
@@ -87,9 +124,11 @@
             }
 
 
-            if (options.quickLink) {
-                for (var index in options.quickLink) {
-                    quickLink.push(this.genrateElement('span', {}, options.quickLink[index]));
+            if (options.quickLink.length > 0) {
+                for (var index in options.quickLink[0]) {
+                    quickLink.push(this.genrateElement('span', {
+                        'data-select': options.quickLink[0][index]
+                    }, index));
                 }
                 var qickLinkDiv = this.genrateElement('div', {
                     'class': 'quickLink'
@@ -144,15 +183,22 @@
                 that.$el.find('.hoverZone').text('');
             });
             this.$el.on('click', 'svg polygon', function() {
-                that.setValue($(this).attr('data-zonename'), 'zonename');
+
+                that.setValue($(this).attr('data-timezone'));
                 that.$el.trigger("map:clicked");
-            })
+
+            });
             this.$el.on('change', 'select', function() {
-                that.$el.find('svg polygon').attr('data-selected', 'false');
-                that.$el.find('svg polygon[data-timezone="' + $(this).val() + '"]').attr('data-selected', 'true');
+                that.setValue($(this).val());
+                that.$el.trigger("map:clicked");
             });
             this.$el.on('click', '.quickLink span', function() {
-                that.setValue($(this).text(), 'zonename');
+                var selectValue = $(this).data().select
+                if (selectValue.search('/') > 0) {
+                    that.setValue(selectValue, 'timezone');
+                } else {
+                    that.setValue(selectValue, 'zonename');
+                }
                 that.$el.trigger("map:clicked");
             });
         },
@@ -205,9 +251,10 @@
                 '.timezone-map polygon { fill: ' + options.mapColor + ';}' +
                 '.timezone-map polygon.active {fill: ' + options.hoverColor + ';}' +
                 '.timezone-map polygon:hover { cursor: pointer;}' +
-                '.Cbox .quickLink{width: 50%;float: right;margin-left: 5%;}' +
+                '.Cbox .quickLink{width: 52%;float: right;padding-bottom: 11px;overflow-x: auto; white-space: nowrap;overflow-y: hidden;}' +
                 '.Cbox .quickLink span:hover {color:#FFF;background-color: #496A84;  cursor: pointer;}' +
                 '.Cbox select{width: 45%;float: left;height: 27px; padding: 0px 0px 0px 10px;}' +
+                '.Cbox .quickLink span.active {color: #FFF; background-color: #496A84;}' +
                 '.Cbox .quickLink span{ font-weight: 300; border-radius: 3px; color: #000; background-color: #FFF; border: solid 1px #CCC;margin-left: 10px;' +
                 'font-size: 9px;padding: 4px 6px 4px 6px;}';
             document.getElementsByTagName('head')[0].appendChild(style);
@@ -3388,5 +3435,4 @@
         "points": "-3,150,10,138",
         "zoneName": "WFT"
     }];
-
-})(jQuery);
+}));
