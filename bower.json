@@ -1,6 +1,5 @@
 {
     "name": "world-map",
-    "version": "1.0.0",
     "main": ["WorldMapGenerator.js", "WorldMapGenerator.min.js", "example.html"],
     "ignore": [
         ".bowerrc",
