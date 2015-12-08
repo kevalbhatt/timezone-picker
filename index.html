@@ -181,7 +181,15 @@
     </section>
     <script type="text/javascript">
     $('#map').WorldMapGenerator({
-        quickLink: ["ACT", "CET", "EAT", "EST", "GMT", "IST", "MST"]
+        quickLink: [{
+            "PST": "PST",
+            "MST": "MST",
+            "CST": "CST",
+            "EST": "EST",
+            "GMT": "GMT",
+            "LONDON": "Europe/London",
+            "IST": "IST"
+        }]
     });
     </script>
 </body>
