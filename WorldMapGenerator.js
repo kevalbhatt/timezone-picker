@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.0
+ * @version: 1.0.1
  * @author: Keval Bhatt 
  * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -10,7 +10,8 @@
 
     if (typeof define === 'function' && define.amd) {
         define(['moment', 'jquery'], function(momentjs, $) {
-            factory(momentjs, $);
+            root.worldMapTime = {};
+            factory(momentjs, $, root.worldMapTime);
         });
 
     } else {
@@ -23,21 +24,53 @@
             }
         }
         if ((root.jQuery != "undefined" || root.Zepto != "undefined" || root.ender != "undefined" || root.$ != "undefined")) {
-            factory(root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
+            var c = root.worldMapTime = {};
+            factory(root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$), c);
         } else {
             throw new Error('jQuery dependnecy not found');
         }
 
     }
 
-}(this, function(moment, $) {
+}(this, function(moment, $, getTimeZoneObjct) {
+    var findValue = function(key, value) {
+        var referObj = [];
+        var obj = WorldMapGenerator.timeZoneValue.filter(function(object) {
+            if (object[key] === value) {
+                referObj.push($.extend(true, {},object));
+                return object;
+            }
+        });
+        for(var i=0;i<referObj.length;i++){
+           delete referObj[i].points;
+           delete referObj[i].pin;
+        }
+        return referObj;
+    }
+    getTimeZoneObjct['getSystemTimezone'] = function() {
+        /* var d = new Date()
+         var n = d.getTimezoneOffset();
+         var offset = (-(n))/60*/
+        var zoneAbr = new Date().toString().split('(')[1].slice(0, -1)
+        return findValue('zoneName', zoneAbr)
+    }
+    getTimeZoneObjct['getZoneName'] = function(zoneAbr) {
+        return findValue('zoneName', zoneAbr).zoneName
+    }
+    getTimeZoneObjct['getTimeZoneString'] = function(zoneAbr) {
+        return findValue('zoneName', zoneAbr).timezone
+    }
+    getTimeZoneObjct['getTimeZoneObject'] = function(zoneAbr) {
+        return findValue('zoneName', zoneAbr)
+    }
+
 
     var WorldMapGenerator = function(element, options) {
         this.$el = element;
         this.generateMap(options);
     }
 
-    WorldMapGenerator.VERSION = '1.0.0';
+    WorldMapGenerator.VERSION = '1.0.1';
 
     WorldMapGenerator.DEFAULTS = {
         width: 500,
