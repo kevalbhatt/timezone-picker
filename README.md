@@ -15,6 +15,5 @@ select and get timezone value of selected area.
 
 ## License
 ---------------------
-It is available under the [MIT LICENSE][license]
-[license]: LICENSE.md
+It is available under the [MIT LICENSE](LICENSE.md)
 
