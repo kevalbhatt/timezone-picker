@@ -1,9 +1,9 @@
 /**
- * @version: 1.0.1
+ * @version: 1.0.0
  * @author: Keval Bhatt 
  * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
- * @website: http://kevalbhatt.github.io/WorldMapGenerator/
+ * @website: http://kevalbhatt.github.io/timezone-picker/
  */
 'use strict';
 (function(root, factory) {
@@ -35,15 +35,15 @@
 }(this, function(moment, $, getTimeZoneObjct) {
     var findValue = function(key, value) {
         var referObj = [];
-        var obj = WorldMapGenerator.timeZoneValue.filter(function(object) {
+        var obj = timezonePicker.timeZoneValue.filter(function(object) {
             if (object[key] === value) {
-                referObj.push($.extend(true, {},object));
+                referObj.push($.extend(true, {}, object));
                 return object;
             }
         });
-        for(var i=0;i<referObj.length;i++){
-           delete referObj[i].points;
-           delete referObj[i].pin;
+        for (var i = 0; i < referObj.length; i++) {
+            delete referObj[i].points;
+            delete referObj[i].pin;
         }
         return referObj;
     }
@@ -65,19 +65,20 @@
     }
 
 
-    var WorldMapGenerator = function(element, options) {
+    var timezonePicker = function(element, options) {
         this.$el = element;
         this.generateMap(options);
     }
 
-    WorldMapGenerator.VERSION = '1.0.1';
+    timezonePicker.VERSION = '1.0.0';
 
-    WorldMapGenerator.DEFAULTS = {
+    timezonePicker.DEFAULTS = {
         width: 500,
         height: 250,
         hoverColor: '#5A5A5A',
         selectedColor: '#496A84',
         mapColor: '#BBB',
+        mapHover: null,
         defaultCss: true,
         localStore: true,
         quickLink: [{
@@ -86,12 +87,13 @@
         }],
         selectBox: true,
         showHoverText: true,
+        hoverText: null,
         dayLightSaving: ((typeof moment == "function") ? (true) : (false))
     };
 
-    WorldMapGenerator.prototype = {
+    timezonePicker.prototype = {
 
-        constructor: WorldMapGenerator,
+        constructor: timezonePicker,
 
         /**
          * [setValue set value in map]
@@ -135,7 +137,7 @@
                 option = [],
                 quickLink = [],
                 containerArr = [],
-                timezone = WorldMapGenerator.timeZoneValue;
+                timezone = timezonePicker.timeZoneValue;
             for (var index in timezone) {
                 polygon.push(this.genrateElement('polygon', {
                     'data-timezone': timezone[index].timezone,
@@ -204,22 +206,28 @@
          * [bindEvent bind all event i.e click,mouseenter,mouseleave,change(select)]
          * @return {[type]} [description]
          */
-        bindEvent: function() {
+        bindEvent: function(options) {
             var that = this;
             this.$el.on('mouseenter', 'svg polygon', function(e) {
-                var d = $(this).data();
-                $('.timezone-map polygon[data-zonename="' + d.zonename + '"]').attr('class', 'active');
-                that.$el.find('.hoverZone').text(d.timezone + " (" + d.zonename + ")");
+                var el = null,
+                    data = $(this).data(),
+                    hoverKey = options.mapHover,
+                    hoverText = options.hoverText;
+                if (hoverKey) {
+                    el = $('.timezone-map polygon[data-' + hoverKey + '="' + data[hoverKey] + '"]');
+                } else {
+                    el = $(e.currentTarget);
+                }
+                el.attr('class', 'active');
+                that.$el.find('.hoverZone').text(hoverText ? (hoverText instanceof Function ? hoverText(e) : hoverText) : (data.timezone + " (" + data.zonename + ")"));
             });
             this.$el.on('mouseleave', 'svg polygon', function(e) {
                 $('.timezone-map polygon').attr('class', '');
                 that.$el.find('.hoverZone').text('');
             });
             this.$el.on('click', 'svg polygon', function() {
-
                 that.setValue($(this).attr('data-timezone'));
                 that.$el.trigger("map:clicked");
-
             });
             this.$el.on('change', 'select', function() {
                 that.setValue($(this).val());
@@ -302,15 +310,20 @@
 
         return this.each(function() {
             var $el = $(this)
-            var options = $.extend({}, WorldMapGenerator.DEFAULTS, $el.data(), typeof option == 'object' && option);
-            $el.data('WorldMapGenerator', new WorldMapGenerator($el, options));
+            var options = $.extend({}, timezonePicker.DEFAULTS, $el.data(), typeof option == 'object' && option);
+            if (options.mapHover) {
+                if (!(options.mapHover && (options.mapHover === "timezone" || options.mapHover === "country" || options.mapHover === "zonename"))) {
+                    throw new Error("map Hover value should have timezone or country or zone name if it is string or pass null for default behaviour");
+                }
+            }
+            $el.data('timezonePicker', new timezonePicker($el, options));
             $el.trigger("map:loaded");
         });
     };
 
-    $.fn.WorldMapGenerator = Plugin;
+    $.fn.timezonePicker = Plugin;
 
-    WorldMapGenerator.timeZoneValue = [{
+    timezonePicker.timeZoneValue = [{
         "timezone": "Africa/Abidjan",
         "country": "CI",
         "pin": "244,118",

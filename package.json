@@ -1,0 +1,27 @@
+{
+  "name": "timezone-picker",
+  "version": "1.0.0",
+  "description": "Select your timezone using world map",
+  "main": "timezone-picker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevalbhatt/timezone-picker.git"
+  },
+  "keywords": [
+    "jquery-timezone",
+    "select",
+    "timezone",
+    "UI",
+    "timezone",
+    "picker"
+  ],
+  "author": "Keval Bhatt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kevalbhatt/timezone-picker/issues"
+  },
+  "homepage": "https://github.com/kevalbhatt/timezone-picker#readme"
+}
