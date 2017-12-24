@@ -2,7 +2,8 @@
 
 timezone-picker is the plugin to select and get timezone value of selected area from WorldMap.
 
-##Just take a look at this demo:
+
+## Just take a look at this demo:
 ---------------------
 
 ![Imgur](http://i.imgur.com/i22GQ74.png?1)
