@@ -12,6 +12,8 @@
     <div id="map" style="width:80%"></div>
     <script type="text/javascript">
     $('#map').timezonePicker();
+    $('#map').data('timezonePicker').setValue('Asia/Kolkata')
+    console.log($('#map').data('timezonePicker').getValue());
     </script>
 </body>
 

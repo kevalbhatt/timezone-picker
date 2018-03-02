@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.0
+ * @version: 1.0.1
  * @author: Keval Bhatt 
  * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php

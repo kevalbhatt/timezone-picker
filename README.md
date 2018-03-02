@@ -53,18 +53,18 @@ $(selector).timezonePicker();
 First parameter takes timezone string for example: 'Asia/Kolkata' (zone name). Second parameter is optinal when 1st parameter is zonename
 
 ```js
-$(selector).data('timezonePicke').setValue('Asia/Kolkata')
+$(selector).data('timezonePicker').setValue('Asia/Kolkata')
 ```
 
 When you want to pass offset value as 1st parameter 2nd parameter should be 'offset'
 
 ```js
-$(selector).data('timezonePicke').setValue('5.5','offset')
+$(selector).data('timezonePicker').setValue('5.5','offset')
 ```
 
 When you want to pass country code as 1st parameter 2nd parameter should be 'country'
 ```js
-$(selector).data('timezonePicke').setValue('IN','country')
+$(selector).data('timezonePicker').setValue('IN','country')
 ```
 
 ### .getValue()
@@ -72,7 +72,7 @@ $(selector).data('timezonePicke').setValue('IN','country')
 It returns object containing timezone details of seleted area:
 
 ```js
-$(selector).data('timezonePicke').getValue()
+$(selector).data('timezonePicker').getValue()
 ```
 
 Sameple returned Object
