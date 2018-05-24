@@ -65,9 +65,14 @@
     }
 
 
-    var timezonePicker = function(element, options) {
+    var timezonePicker = function(element, options, callback) {
         this.$el = element;
         this.generateMap(options);
+
+        this.callback = function() {};
+        if (typeof callback == 'function') {
+            this.callback = callback;  
+        }
     }
 
     timezonePicker.VERSION = '1.0.0';
@@ -112,8 +117,11 @@
                 var findQuickLink = this.$el.find('.quickLink span[data-select="' + value + '"]');
                 this.$el.find('.quickLink span[data-select="' + value + '"]').addClass('active');
                 this.$el.find('.quickLink span[data-select="' + elements.attr('data-zonename') + '"]').addClass('active');
-
             }
+            if (value) {
+                this.callback(value);
+            }
+            
         },
         /**
          * [getValue get selected value array]
@@ -171,7 +179,13 @@
                 containerArr.push(qickLinkDiv);
             }
 
-
+            if (options.showHoverText) {
+                var hoverZone = this.genrateElement('span', {
+                    'class': 'hoverZone',
+                });
+                //this.$el.append(hoverZone);
+                containerArr.push(hoverZone);
+            }
 
             var svg = this.genrateElement('svg', {
                 'class': 'timezone-map',
@@ -186,15 +200,6 @@
 
             }
             this.$el.append(svg);
-
-            if (options.showHoverText) {
-                var hoverZone = this.genrateElement('span', {
-                    'class': 'hoverZone',
-                });
-                this.$el.append(hoverZone);
-            }
-
-
 
             if (options.defaultCss) {
                 this.createCss(options);
@@ -294,7 +299,8 @@
                 '.timezone-map polygon:hover { cursor: pointer;}' +
                 '.Cbox .quickLink{width: 52%;float: right;padding-bottom: 11px;overflow-x: auto; white-space: nowrap;overflow-y: hidden;}' +
                 '.Cbox .quickLink span:hover {color:#FFF;background-color: #496A84;  cursor: pointer;}' +
-                '.Cbox select{width: 45%;float: left;height: 27px; padding: 0px 0px 0px 10px;}' +
+                '.Cbox select{width: 45%;float: left;height: 34px; }' +
+                '.Cbox .hoverZone{padding: 0px 0px 10px 10px; white-space: nowrap;}' +
                 '.Cbox .quickLink span.active {color: #FFF; background-color: #496A84;}' +
                 '.Cbox .quickLink span{ font-weight: 300; border-radius: 3px; color: #000; background-color: #FFF; border: solid 1px #CCC;margin-left: 10px;' +
                 'font-size: 9px;padding: 4px 6px 4px 6px;}';
@@ -306,7 +312,7 @@
      * [Plugin Staring point for plugin]
      * @param {[type]} option [user options which can be override the default options]
      */
-    function Plugin(option) {
+    function Plugin(option, callback) {
 
         return this.each(function() {
             var $el = $(this)
@@ -316,8 +322,10 @@
                     throw new Error("map Hover value should have timezone or country or zone name if it is string or pass null for default behaviour");
                 }
             }
-            $el.data('timezonePicker', new timezonePicker($el, options));
-            $el.trigger("map:loaded");
+            if ($el.data('timezonePicker'))
+                $el.data('timezonePicker').remove();
+            $el.data('timezonePicker', new timezonePicker($el, options, callback));
+            $el.trigger("map:loaded"); 
         });
     };
 
