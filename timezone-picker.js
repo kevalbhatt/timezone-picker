@@ -139,7 +139,7 @@
                 containerArr = [],
                 timezone = timezonePicker.timeZoneValue;
             for (var index in timezone) {
-                polygon.push(this.genrateElement('polygon', {
+                polygon.push(this.generateElement('polygon', {
                     'data-timezone': timezone[index].timezone,
                     'data-country': timezone[index].country,
                     'data-pin': timezone[index].pin,
@@ -147,12 +147,12 @@
                     'points': timezone[index].points,
                     'data-zonename': ((options.dayLightSaving) ? (moment().tz(timezone[index].timezone).zoneName()) : (timezone[index].zoneName))
                 }, false, true));
-                option.push(this.genrateElement('option', {
+                option.push(this.generateElement('option', {
                     'value': timezone[index].timezone
                 }, timezone[index].timezone + " (" + ((options.dayLightSaving) ? (moment().tz(timezone[index].timezone).zoneName()) : (timezone[index].zoneName)) + ")"));
             }
             if (options.selectBox) {
-                var select = this.genrateElement('select', {
+                var select = this.generateElement('select', {
                     'class': 'btn btn-default dropdown-toggle',
                 }, option);
                 containerArr.push(select);
@@ -161,11 +161,11 @@
 
             if (options.quickLink.length > 0) {
                 for (var index in options.quickLink[0]) {
-                    quickLink.push(this.genrateElement('span', {
+                    quickLink.push(this.generateElement('span', {
                         'data-select': options.quickLink[0][index]
                     }, index));
                 }
-                var qickLinkDiv = this.genrateElement('div', {
+                var qickLinkDiv = this.generateElement('div', {
                     'class': 'quickLink'
                 }, quickLink);
                 containerArr.push(qickLinkDiv);
@@ -173,13 +173,13 @@
 
 
 
-            var svg = this.genrateElement('svg', {
+            var svg = this.generateElement('svg', {
                 'class': 'timezone-map',
                 'viewBox': '0 0 ' + options.width + ' ' + options.height
             }, polygon, true);
 
             if (containerArr.length > 0) {
-                var container = this.genrateElement('div', {
+                var container = this.generateElement('div', {
                     'class': 'Cbox'
                 }, containerArr);
                 this.$el.append(container);
@@ -188,7 +188,7 @@
             this.$el.append(svg);
 
             if (options.showHoverText) {
-                var hoverZone = this.genrateElement('span', {
+                var hoverZone = this.generateElement('span', {
                     'class': 'hoverZone',
                 });
                 this.$el.append(hoverZone);
@@ -244,14 +244,14 @@
             });
         },
         /**
-         * [genrateElement description]
+         * [generateElement description]
          * @param  {[Jquery Object]}  element     [selector]
          * @param  {[type]}  elementAttr [description]
          * @param  {[javascript Object or text]}  chilled      [If we pass javascript object or  array it will append all chilled and if you pass string it will add string(value) inside element ]
          * @param  {Boolean} isSvg       [If it is svg then it will create svg element]
          * @return {[type]}              [description]
          */
-        genrateElement: function(element, elementAttr, chilled, isSvg) {
+        generateElement: function(element, elementAttr, chilled, isSvg) {
 
 
             if (isSvg) {
