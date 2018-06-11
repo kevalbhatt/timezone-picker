@@ -103,7 +103,7 @@ Sameple returned Object
 Whenever the value of the timezon changes, the event **map:clicked** is fired.
 To catch it you can use:
 ``` 
-$("selector").on("map:clicked" , function(){
+$(selector).on("map:clicked" , function(){
     console.log($(selector).data('timezonePicker').getValue());
 });
 ``` 
