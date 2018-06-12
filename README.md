@@ -100,13 +100,25 @@ Sameple returned Object
 # Events
 ---------------------
 
-Whenever the value of the timezon changes, the event **map:clicked** is fired.
+## map:loaded
+
+As soon as the map is loaded and ready the **map:loaded** is fired.
 To catch it you can use:
-``` 
+```
+$(selector).on("map:loaded" , function(){
+    console.log("Map is loaded, have fun!");
+});
+```
+
+## map:clicked
+
+Whenever the value of the timezone changes, the event **map:clicked** is fired.
+To catch it you can use:
+```
 $(selector).on("map:clicked" , function(){
     console.log($(selector).data('timezonePicker').getValue());
 });
-``` 
+```
 
 ## License
 ---------------------
