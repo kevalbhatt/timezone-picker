@@ -1,0 +1,82 @@
+/**
+ * @version: 1.0.2
+ * @author: Keval Bhatt 
+ * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
+ * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
+ * @website: http://kevalbhatt.github.io/timezone-picker/
+ */
+
+@import 'colors';
+
+body.example {
+    background-color: $light_blue;
+}
+
+.timezone-map {
+    polygon {
+        fill: $country_background;
+        stroke-width: 0.5;
+        stroke: $country_stroke;
+        &[data-selected="true"] {
+            fill: $active;
+            stroke: $active;
+        }
+        &:hover {
+            stroke: $active;
+            fill: $active;
+            cursor: pointer;
+        }
+    }
+}
+
+.filter-box {
+    &>* {
+        float: left;
+        height: 24px;
+    }
+    select {
+        width: 45%;
+        padding: 0px 0px 0px 10px;
+    }
+    .quick-link {
+        width: 52%;
+        overflow-x: auto;
+        white-space: nowrap;
+        overflow-y: hidden;
+        span {
+            font-weight: 300;
+            border-radius: 3px;
+            color: $black;
+            background-color: $white;
+            border: solid 1px $black;
+            margin-left: 10px;
+            font-size: 9px;
+            padding: 4px 6px 4px 6px;
+            &.active {
+                color: $white;
+                background-color: $active;
+            }
+            &:hover {
+                color: $white;
+                background-color: $active;
+                cursor: pointer;
+            }
+        }
+    }
+    .hover-text {
+        height: 20px;
+        width: 100%;
+        padding: 10px;
+        p {
+            opacity: 0;
+            text-align: center;
+            transform: scale(10);
+            transition: all 0.3s ease-in-out 0.2s;
+            &.active {
+                opacity: 1;
+                transform: scale(1);
+                transition: all 0.3s ease-in-out 0.1s;
+            }
+        }
+    }
+}
