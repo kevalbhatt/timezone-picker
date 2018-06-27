@@ -33,11 +33,11 @@ npm install --save timezone-picker
 Include the following lines of code in the section of your HTML.
 
 ```html
-<link href="[yourpath]/select2.min.css" rel="stylesheet"> <!-- optional --->
+<link href="[yourpath]/select2.min.css" rel="stylesheet"> <!-- Optional -->
 <link href="[yourpath]/dist/styles/timezone-picker.css" rel="stylesheet">
 <script type="text/javascript" src="[yourpath]/moment-timezone.js"></script> 
 <script type="text/javascript" src="[yourpath]/jquery.js"></script>
-<script type="text/javascript" src="[yourpath]/select2"></script> <!-- optional --->
+<script type="text/javascript" src="[yourpath]/select2"></script> <!-- Optional -->
 <script type="text/javascript" src="[yourpath]/dist/timezone-picker.min.js"></script>
 ```
 

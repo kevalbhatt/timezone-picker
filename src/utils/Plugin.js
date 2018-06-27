@@ -13,6 +13,7 @@
  * @param  {Boolean} options.shortHand  [Generate a shorthand as $.pluginName]
  * @return {[type]}                     [description]
  */
+
 export default function plugin({ pluginName, classRef, shortHand = false }) {
     let dataName = `${pluginName}`;
     let old = $.fn[pluginName];

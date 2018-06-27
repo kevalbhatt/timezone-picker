@@ -11,11 +11,11 @@ import timezones from 'timezones.json';
 import { findValue, generateElement } from 'utils/Utils';
 import Plugin from 'utils/Plugin';
 import 'select2';
-import 'select2/dist/css/select2.min';
+import 'select2/dist/css/select2.css';
 
 import 'styles/style';
 
-class TimezonePicker {
+export default class TimezonePicker {
     static VERSION: "1.1.0"
 
     static DEFAULTS = {

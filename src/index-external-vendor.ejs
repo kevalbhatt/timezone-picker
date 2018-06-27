@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Select timezone using world map</title>
+</head>
+
+<body class="example">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.21/moment-timezone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+    <script type="text/javascript">
+    setTimeout(function() {
+        $('body').timezonePicker({
+            hoverText: function(e, data) {
+                return (data.timezone + " (" + data.zonename + ")");
+            },
+            defaultValue: { value: "IN", attribute: "country" }
+        });
+    }, 1000)
+    </script>
+</body>
+
+</html>

@@ -1,11 +1,3 @@
-/**
- * @version: 1.0.2
- * @author: Keval Bhatt 
- * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
- * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
- * @website: http://kevalbhatt.github.io/timezone-picker/
- */
-
 const path = require('path'),
     webpack = require('webpack'),
     CleanWebpackPlugin = require('clean-webpack-plugin'),
@@ -16,22 +8,22 @@ const path = require('path'),
 const extractApp = new ExtractTextPlugin('styles/[name].css');
 const extractVendor = new ExtractTextPlugin('styles/[name]-vendor.css');
 
+
 var ENV = process.env.NODE_ENV,
     buildType = process.env.BUILD_TYPE,
     isProd = (
         ENV === "production" ?
         true :
         false),
-    BUILD_DIR = path.resolve(
-        __dirname, 'dist'),
+    BUILD_DIR = path.resolve(__dirname, 'dist'),
     ROOT_DIR = path.resolve(__dirname),
+    EXAMPLE_DIR = path.resolve(__dirname, 'example'),
     APP_DIR = path.resolve(__dirname, 'src'),
     NODE_MODULES = path.resolve(__dirname, 'node_modules'),
-    pathsToClean = [BUILD_DIR],
+    pathsToClean = [BUILD_DIR, EXAMPLE_DIR],
     config = {
         entry: {
-            "timezone-picker-vendor": ['moment-timezone', 'jquery', 'select2'],
-            "timezone-picker": APP_DIR + "/TimezonePicker.js",
+            "timezone-picker": [APP_DIR + "/TimezonePicker.js"]
         },
         output: {
             path: (
@@ -40,6 +32,7 @@ var ENV = process.env.NODE_ENV,
                 ROOT_DIR), //<- This path is use at build time
             filename: "[name].min.js", //<- This file is created under path which we specified in output.path
             chunkFilename: '[name].min.js',
+            library: "TimezonePicker",
             libraryTarget: 'umd'
         },
         plugins: [
@@ -48,16 +41,6 @@ var ENV = process.env.NODE_ENV,
                 verbose: true
             }),
             extractApp,
-            extractVendor,
-            new HtmlWebpackPlugin({
-                title: 'timezone-picker',
-                template: (APP_DIR) + '/index.ejs',
-                chunks: ['vendor', 'timezone-picker'],
-                filename: (
-                    isProd ?
-                    ROOT_DIR + "/example" :
-                    ROOT_DIR) + '/index.html'
-            }),
             new webpack.DefinePlugin({ 'isProd': isProd }),
             new webpack.ProvidePlugin({
                 $: 'jquery',
@@ -91,7 +74,7 @@ var ENV = process.env.NODE_ENV,
                             presets: [
                                 "env"
                             ],
-                            plugins: ["transform-decorators-legacy", "transform-flow-strip-types", "transform-class-properties", "transform-object-rest-spread", "add-module-exports"]
+                            plugins: ["transform-decorators-legacy", "transform-flow-strip-types", "transform-class-properties", "transform-object-rest-spread"]
                         }
                     }]
                 }, {
@@ -159,9 +142,34 @@ var ENV = process.env.NODE_ENV,
             disableHostCheck: true
         }
     };
-
+var mainHtml = new HtmlWebpackPlugin({
+    title: 'timezone-picker',
+    template: (APP_DIR) + '/index.ejs',
+    chunks: ['timezone-picker'],
+    filename: (
+        isProd ?
+        BUILD_DIR :
+        ROOT_DIR) + '/index.html'
+});
+var externalVendorHtml = new HtmlWebpackPlugin({
+    title: 'timezone-external-vendor',
+    template: (APP_DIR) + '/index-external-vendor.ejs',
+    chunks: ['timezone-picker'],
+    filename: (
+        isProd ?
+        ROOT_DIR + "/example" :
+        ROOT_DIR) + '/index-external-vendor.html'
+});
 if (!isProd) {
     config['devtool'] = 'inline-source-map';
     config['cache'] = true;
+    config.plugins.push(extractVendor, mainHtml, externalVendorHtml);
+} else {
+    config["externals"] = {
+        jquery: 'jQuery',
+        "moment-timezone": "moment-timezone",
+        select2: "select2"
+    }
+    config.plugins.push(externalVendorHtml);
 }
 module.exports = config;
