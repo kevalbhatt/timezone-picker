@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.2
+ * @version: v2.0.0-0
  * @author: Keval Bhatt 
  * @copyright: Copyright (c) 2015 Keval Bhatt. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -16,7 +16,7 @@ import 'select2/dist/css/select2.css';
 import 'styles/style';
 
 export default class TimezonePicker {
-    static VERSION: "1.1.0"
+    static VERSION: "v2.0.0-0"
 
     static DEFAULTS = {
         width: 500,

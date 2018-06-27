@@ -2,11 +2,11 @@
 
 timezone-picker is the plugin to select and get timezone value of selected area(country) from WorldMap.
 
-
-[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)]()
 [![NPM version](https://badge.fury.io/js/timezone-picker.svg)](https://www.npmjs.com/package/timezone-picker)
 [![NPM Dependency](https://david-dm.org/kevalbhatt/timezone-picker.svg)](https://www.npmjs.com/package/timezone-picker)
+[![](https://data.jsdelivr.com/v1/package/npm/timezone-picker/badge)](https://www.jsdelivr.com/package/npm/timezone-picker)
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)]()
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/kevalbhatt/timezone-picker/issues)
 [![HitCount](http://hits.dwyl.com/kevalbhatt/timezone-picker.svg)](http://github.com/kevalbhatt/timezone-picker)
 
@@ -25,10 +25,19 @@ timezone-picker is the plugin to select and get timezone value of selected area(
 
 # Installation
 ---------------------
+
+### Use package Using npm
+
 ```sh
 npm install --save timezone-picker
 ```
+or 
 
+### Use package Using CDN
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/timezone-picker@2.0.0-0/timezone-picker.min.js"></script>
+```
 
 Include the following lines of code in the section of your HTML.
 
@@ -38,15 +47,6 @@ Include the following lines of code in the section of your HTML.
 <script type="text/javascript" src="[yourpath]/moment-timezone.js"></script> 
 <script type="text/javascript" src="[yourpath]/jquery.js"></script>
 <script type="text/javascript" src="[yourpath]/select2"></script> <!-- Optional -->
-<script type="text/javascript" src="[yourpath]/dist/timezone-picker.min.js"></script>
-```
-
-If you want all dependency in one js & css then use vendor js & css. 
-
-```html
-<link href="[yourpath]/dist/styles/timezone-picker.css" rel="stylesheet">
-<link href="[yourpath]/dist/styles/timezone-picker-vendor.css" rel="stylesheet">
-<script type="text/javascript" src="[yourpath]/dist/timezone-picker-vendor-min.js"></script>
 <script type="text/javascript" src="[yourpath]/dist/timezone-picker.min.js"></script>
 ```
 
