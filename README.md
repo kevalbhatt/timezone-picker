@@ -36,7 +36,7 @@ or
 ### Use package Using CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/timezone-picker@2.0.0-0/timezone-picker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/timezone-picker@2.0.0-1/dist/timezone-picker.min.js"></script>
 ```
 
 Include the following lines of code in the section of your HTML.
