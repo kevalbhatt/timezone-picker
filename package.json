@@ -1,6 +1,6 @@
 {
   "name": "timezone-picker",
-  "version": "1.0.2",
+  "version": "2.0.0-0",
   "description": "Select your timezone using world map",
   "main": "dist/timezone-picker.min.js",
   "scripts": {
