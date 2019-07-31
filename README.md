@@ -417,7 +417,7 @@ $(selector).on("map:loaded" , function(){
 Whenever the value of the timezone changes, the event **map:value:changed** is fired.
 To catch it you can use:
 ```
-$(selector).on("map:clicked" , function(){
+$(selector).on("map:value:changed" , function(){
     console.log($(selector).data('timezonePicker').getValue());
 });
 ```
