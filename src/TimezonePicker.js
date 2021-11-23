@@ -16,7 +16,7 @@ import 'select2/dist/css/select2.css';
 import 'styles/style';
 
 export default class TimezonePicker {
-    static VERSION: "v2.0.0-0"
+    static VERSION: "v2.0.0-2"
 
     static DEFAULTS = {
         width: 500,
@@ -35,7 +35,7 @@ export default class TimezonePicker {
         hoverTextClass: "",
         hoverTextEl: null,
         hoverText: null,
-        dayLightSaving: ((typeof moment == "function") ? (true) : (false))
+        dayLightSaving: (typeof moment == "function")
     }
 
     constructor(element, options) {
@@ -50,10 +50,20 @@ export default class TimezonePicker {
             }
         } else {
             let timezoneObj = this.getSystemTimezone()[0];
+
             if (timezoneObj) {
                 this.setValue(timezoneObj.timezone);
             }
         }
+    }
+    /**
+     * [getSystemTimezone return system timezone object]
+     * @return {[Object]} [description]
+     */
+    getSystemTimezone() {
+        var timezone = moment.tz.guess(); // error occurs on this line due to momentjs being ridiculous
+
+        return this.getTimeZoneObject(timezone)
     }
     /**
      * [getTimeZoneObject returns timezone object based on value and attribute, default attribute is timezone]
@@ -63,14 +73,6 @@ export default class TimezonePicker {
      */
     getTimeZoneObject(value, attribute) {
         return findValue(attribute ? attribute : 'timezone', value, this.timezone)
-    }
-    /**
-     * [getSystemTimezone return system timezone object]
-     * @return {[Object]} [description]
-     */
-    getSystemTimezone() {
-        var timezone = moment.tz.guess();
-        return this.getTimeZoneObject(timezone)
     }
     /**
      * [getZoneName return zonename based on value and attribute, default attribute is timezone]
@@ -246,17 +248,28 @@ export default class TimezonePicker {
      * @return {[type]} [description]
      */
     bindEvent(options) {
+
         this.$el.on('mouseenter', 'svg polygon', (e) => {
             var el = null,
                 data = $(e.target).data(),
                 hoverKey = options.mapHoverType,
-                hoverText = options.hoverText;
+                hoverText = options.hoverText,
+                showHoverText = options.showHoverText;
             if (hoverKey) {
                 el = $('.timezone-map polygon[data-' + hoverKey + '="' + data[hoverKey] + '"]');
             } else {
                 el = $(e.currentTarget);
             }
-            this.$el.find('.hover-text p').addClass('active').text(hoverText && hoverText instanceof Function ? hoverText(e, data) : (data.timezone + " (" + data.zonename + ")"));
+            if (showHoverText) {
+                
+                function defaultHoverText(data) {
+                    return `${data.timezone} (${data.zonename})`
+                }
+
+                this.$el.find('.hover-text p')
+                    .addClass('active')
+                    .text(hoverText && hoverText instanceof Function ? hoverText(e, data) : defaultHoverText(data));
+            }
         });
         this.$el.on('mouseleave', 'svg polygon', (e) => {
             this.$el.find('.hover-text p').removeClass('active').text('');

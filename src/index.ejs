@@ -5,16 +5,15 @@
     <title>Select timezone using world map</title>
 </head>
 
-<body class="example">
+<body class="example" onload="loaded()">
     <script type="text/javascript">
-    setTimeout(function() {
-        $('body').timezonePicker({
-            hoverText: function(e, data) {
-                return (data.timezone + " (" + data.zonename + ")");
-            },
-            defaultValue: { value: "IN", attribute: "country" }
-        });
-    }, 1000)
+
+function loaded() {
+    $('body').timezonePicker({
+        showHoverText: false
+    });
+}
+
     </script>
 </body>
 
