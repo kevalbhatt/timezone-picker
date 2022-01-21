@@ -35,7 +35,8 @@ export default class TimezonePicker {
         hoverTextClass: "",
         hoverTextEl: null,
         hoverText: null,
-        dayLightSaving: ((typeof moment == "function") ? (true) : (false))
+        dayLightSaving: ((typeof moment == "function") ? (true) : (false)),
+        circlesRadius: 3
     }
 
     constructor(element, options) {
@@ -116,10 +117,57 @@ export default class TimezonePicker {
             value.push($(el).data());
         });
         return value;
+    }    
+    /**
+     * [transforms single-stroke shapes into circles - leaves other shapes as is]
+     * @param  {[String]} rawPoints - points coordinates separated by comma
+     * @return {[String]}
+     */
+    transformPoints(rawPoints) {
+        var coords = rawPoints.split(',');
+        if (coords.length <= 4) {
+            var intCoords = coords.map(function (a) { return parseInt(a); });
+            var center;
+
+            if (coords.length === 2) {
+                // single point: take it as the circle center
+                center = { x: intCoords[0], y: intCoords[2] };
+            } else if (coords.length === 4) {
+                // two points: take the stroke center as the circle center
+                var getCenter = function (a, b) { return a + ((b - a) / 2); };
+                center = {
+                    x: getCenter(intCoords[0], intCoords[2]),
+                    y: getCenter(intCoords[1], intCoords[3])
+                };
+            } else {
+                // strange case with incomplete points
+                return rawPoints;
+            }         
+    
+            var round2 = function (x) { return Math.round(x * 100) / 100; };
+    
+            var points = [];
+            var _2pi = Math.PI * 2;
+            var nbSteps = 12;
+            var radius = options.circlesRadius || 3;
+            var stepSize = _2pi / nbSteps;
+            for (var angle = 0; angle < _2pi; angle += stepSize) {
+                points.push({
+                    x: round2(center.x + Math.cos(angle) * radius),
+                    y: round2(center.y + Math.sin(angle) * radius)
+                });
+            }
+            
+            // serialize back the points into a single string
+            return points.reduce(function (prev, curr, index) {
+                return prev + (index === 0 ? '' : ',') + curr.x + ',' + curr.y;
+            }, '');
+        }
+        return rawPoints;
     }
     /**
      * [generateMap create element dynamically]
-     * @param  {[Object]} options [depanding on option it will create elements]
+     * @param  {[Object]} options [depending on option it will create elements]
      * @return {[Null]}         [description]
      */
     generateMap(options) {
@@ -148,7 +196,7 @@ export default class TimezonePicker {
                     'data-country': timezone[index].country,
                     'data-pin': timezone[index].pin,
                     'data-offset': timezone[index].offset,
-                    'points': timezone[index].points,
+                    'points': transformPoints(timezone[index].points),
                     'data-zonename': timezone[index].zonename
                 },
                 isSvg: true
