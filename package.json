@@ -3,6 +3,9 @@
   "version": "2.0.0-1",
   "description": "Select your timezone using world map",
   "main": "dist/timezone-picker.min.js",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --progress --inline --hot --open --mode development",
     "prod": "cross-env NODE_ENV=production webpack --mode production "
