@@ -90,6 +90,65 @@ $(selector).timezonePicker({ defaultValue: { value: "Asia/Calcutta", attribute: 
 $(selector).timezonePicker({ defaultValue: { value: "5.5", attribute: "offset" }});
 ```
 
+## timezones
+
+Provide your own timezone polygon dataset (array). This lets you load map data from a lightweight external source (for example with `d3-fetch`) instead of relying on the bundled `timezones.json`.
+
+### Required item shape
+
+Each item in `timezones` must be converted into this shape before rendering:
+
+```ts
+{
+  timezone: string,  // e.g. "Europe/London"
+  zonename: string,  // e.g. "GMT"
+  country: string,   // ISO country code, e.g. "GB"
+  offset: string|number,
+  pin: string,       // unique ID used internally
+  points: string     // SVG polygon points, e.g. "10,10 40,10 40,40 10,40"
+}
+```
+
+```js
+d3.json('/assets/timezones-lite.json').then(function(zones){
+    $(selector).timezonePicker({
+        timezones: zones
+    });
+});
+```
+
+### Converting from GeoJSON / D3 data
+
+If your source is GeoJSON (or any external polygon format), use `timezoneAdapter` to convert each item into the required shape:
+
+```js
+const projection = d3.geoMercator().scale(80).translate([250, 130]);
+
+d3.json('/assets/timezones.geo.json').then(function(geojson){
+    $(selector).timezonePicker({
+        timezones: geojson.features,
+        timezoneAdapter: function(feature){
+            var ring = feature.geometry.coordinates[0]; // first polygon ring
+            var points = ring.map(function(coord){
+                var projected = projection(coord); // [x, y]
+                return projected[0] + ',' + projected[1];
+            }).join(' ');
+
+            return {
+                timezone: feature.properties.timezone,
+                zonename: feature.properties.zonename || feature.properties.timezone,
+                country: feature.properties.country,
+                offset: feature.properties.offset,
+                pin: feature.properties.pin || feature.id || feature.properties.timezone,
+                points: points
+            };
+        }
+    });
+});
+```
+
+`timezoneAdapter` is optional. If omitted, data is expected to already match the required picker shape.
+
 ## quickLink
 
 You can create custom shortcuts link using quickLink options.

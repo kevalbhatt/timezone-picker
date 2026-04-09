@@ -21,6 +21,8 @@ export default class TimezonePicker {
     static DEFAULTS = {
         width: 500,
         height: 250,
+        timezones: null,
+        timezoneAdapter: null,
         defaultValue: null,
         mapHoverType: null,
         quickLinkClass: "",
@@ -128,7 +130,7 @@ export default class TimezonePicker {
             option = [],
             quickLink = [],
             containerArr = [];
-        this.timezone = Object.assign([], timezones);
+        this.timezone = this.normalizeTimezones(options);
         var timezone = this.timezone;
         for (var index in timezone) {
 
@@ -240,6 +242,29 @@ export default class TimezonePicker {
 
         this.bindEvent(options);
 
+    }
+    /**
+     * [normalizeTimezones convert external dataset into picker compatible shape]
+     * @param {[Object]} options [plugin options]
+     * @return {[Array<Object>]} [normalized timezones]
+     */
+    normalizeTimezones(options) {
+        var source = (Array.isArray(options.timezones) && options.timezones.length ? options.timezones : timezones);
+        var adapter = options.timezoneAdapter;
+        return source.map((zone) => {
+            var mapped = (adapter && adapter instanceof Function) ? adapter(zone) : zone;
+            return Object.assign({}, mapped);
+        }).filter((zone) => {
+            return this.isValidTimezone(zone);
+        });
+    }
+    /**
+     * [isValidTimezone validate required timezone payload fields]
+     * @param {[Object]} zone [timezone object]
+     * @return {[Boolean]} [is valid]
+     */
+    isValidTimezone(zone) {
+        return !!(zone && zone.timezone && zone.zonename && zone.country && zone.offset !== undefined && zone.pin && zone.points);
     }
     /**
      * [bindEvent bind all event i.e click,mouseenter,mouseleave,change(select)]
