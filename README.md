@@ -94,6 +94,11 @@ $(selector).timezonePicker({ defaultValue: { value: "5.5", attribute: "offset" }
 
 Provide your own timezone polygon dataset (array). This lets you load map data from a lightweight external source (for example with `d3-fetch`) instead of relying on the bundled `timezones.json`.
 
+> Should we delete `src/timezones.json`?
+>
+> Keep it in this package for backward compatibility. Existing users rely on bundled defaults.  
+> If your app always provides `timezones` data, you can ignore the bundled file at runtime (or remove it in a custom fork/build).
+
 ### Required item shape
 
 Each item in `timezones` must be converted into this shape before rendering:
